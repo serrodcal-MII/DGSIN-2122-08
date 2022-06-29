@@ -1,0 +1,215 @@
+# From Postman collection using https://metamug.com/util/postman-to-swagger/
+openapi: 3.0.0
+info:
+  title: dgsin2122-08-apartmentsAPI
+  version: 1.0.0
+  description: >-
+    This is an OpenAPI Specification for DGSIN-2122-08 Apartment statistics
+  contact:
+    name: Sergio Rodríguez Calvo
+    email: serrodcal@alum.us.es
+    url: 'https://github.com/serrodcal'
+  license:
+    name: MIT
+    url: 'http://opensource.org/licenses/MIT'
+servers:
+  - url: https://dgsin-2122-08.herokuapp.com/
+paths:
+  /api/v1/apartments:
+    get:
+      summary: Get all apartments statistics
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/apartment'
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    post:
+      summary: Create new apartment statistic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/apartment'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '409':
+          description: Conflict
+          content:
+            application/json: {}
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    delete:
+      summary: Delete all apartments statistics
+      responses:
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+  /api/v1/apartments/{country}/{year}:
+    get:
+      summary: Get single apartment statistic
+      parameters:
+        - name: country
+          in: path
+          description: name of the country
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          description: year of the stat
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apartment'
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    put:
+      summary: Update single apartment statistic
+      parameters:
+        - name: country
+          in: path
+          description: name of the country
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          description: year of the stat
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/apartment'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    delete:
+      summary: Delete an apartment statistic
+      parameters:
+        - name: country
+          in: path
+          description: name of the country
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          description: year of the stat
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+  /api/v1/apartments/loadInitialData:
+    get:
+      summary: Populate database if it is empty
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+components:
+  schemas:
+    apartment:
+      description: 'Tourist Apartment Stat'
+      type: object
+      properties:
+        country:
+          type: string
+          minLength: 1
+        year:
+          type: integer
+        travellers:
+          type: integer
+        stays:
+          type: integer
+        avg:
+          type: number
+      required:
+        - country
+        - year
+        - travellers
+        - stays
+        - avg

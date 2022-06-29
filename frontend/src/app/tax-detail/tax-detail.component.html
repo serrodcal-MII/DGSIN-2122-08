@@ -1,0 +1,93 @@
+<div class="container">
+    <h2>Actualizar Ingreso Tributario como porcentaje del PIB</h2>
+    <div class="row">
+        <div class="col-4">
+            <div *ngIf="showError" class="alert alert-danger" role="alert">
+                {{errorMessage}}
+            </div>
+        </div>
+    </div>
+    <form #formTax="ngForm" (ngSubmit)="saveTax()" class="row">
+        <div class="col-6">
+            <label>País:</label>
+            <input class="form-control" minlength="3" #newTaxCountry="ngModel" name="newTaxCountry"
+                [(ngModel)]="tax.country" type="text"
+                [ngClass]="'form-control' + (newTaxCountry.invalid && newTaxCountry.touched ? ' is-invalid' : '')"
+                required disabled />
+            <div *ngIf="newTaxCountry.invalid && newTaxCountry.touched" class="invalid-feedback">
+                <div *ngIf="newTaxCountry.errors?.['required']">
+                    El país es obligatorio
+                </div>
+                <div *ngIf="newTaxCountry.errors?.['minlength']">
+                    El país debe tener al menos 3 letras
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <label>Año:</label>
+            <input class="form-control" #newTaxYear="ngModel" name="newTaxYear" [(ngModel)]="tax.year" type="number"
+                min="1700" [ngClass]="'form-control' + (newTaxYear.invalid && newTaxYear.touched ? ' is-invalid' : '')"
+                required disabled />
+            <div *ngIf="newTaxYear.invalid && newTaxYear.touched" class="invalid-feedback">
+                <div *ngIf="newTaxYear.errors?.['required']">
+                    El año es obligatorio
+                </div>
+                <div *ngIf="newTaxYear.errors?.['min']">
+                    El año debe ser mayor de 1700
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <label>PIB per cápita:</label>
+            <input class="form-control" #newTaxGDP="ngModel" name="newTaxGDP" [(ngModel)]="tax.gdp_per_capita"
+                type="number" [ngClass]="'form-control' + (newTaxGDP.invalid && newTaxGDP.touched ? ' is-invalid' : '')"
+                required />
+            <div *ngIf="newTaxGDP.invalid && newTaxGDP.touched" class="invalid-feedback">
+                <div *ngIf="newTaxGDP.errors?.['required']">
+                    El PIB per cápita es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <label>Ingreso fiscal total:</label>
+            <input class="form-control" #newTaxTotal="ngModel" name="newTaxTotal" [(ngModel)]="tax.total_tax_revenues"
+                type="number"
+                [ngClass]="'form-control' + (newTaxTotal.invalid && newTaxTotal.touched ? ' is-invalid' : '')"
+                required />
+            <div *ngIf="newTaxTotal.invalid && newTaxTotal.touched" class="invalid-feedback">
+                <div *ngIf="newTaxTotal.errors?.['required']">
+                    El Ingreso fiscal total es obligatorio
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <label>Población:</label>
+            <input class="form-control" min="1" #newTaxPopulation="ngModel" name="newTaxPopulation"
+                [(ngModel)]="tax.population" type="number" pattern="^\d+$"
+                [ngClass]="'form-control' + (newTaxPopulation.invalid && newTaxPopulation.touched ? ' is-invalid' : '')"
+                required />
+            <div *ngIf="newTaxPopulation.invalid && newTaxPopulation.touched" class="invalid-feedback">
+                <div *ngIf="newTaxPopulation.errors?.['required']">
+                    La población es obligatoria
+                </div>
+                <div *ngIf="newTaxPopulation.errors?.['min']">
+                    La población debe ser mayor que 0
+                </div>
+                <div *ngIf="newTaxPopulation.errors?.['pattern']">
+                    La población no puede tener decimales
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input type="submit" value="Guardar" class="btn btn-outline-primary"
+                        [disabled]="!formTax.form.valid" />
+                </div>
+                <div class="col-6 mt-2">
+                    <button class="btn btn-light" (click)="goBack()">Volver</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

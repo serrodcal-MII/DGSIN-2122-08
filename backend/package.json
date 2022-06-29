@@ -1,0 +1,27 @@
+{
+  "name": "dgsin2122-08",
+  "version": "1.0.0",
+  "description": "Occupancy tourist",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mii-dgsin/dgsin-2122-08.git"
+  },
+  "author": "Guiomar Fernández de Bobadilla Brioso y Sergio Rodríguez Calvo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mii-dgsin/dgsin-2122-08/issues"
+  },
+  "homepage": "https://github.com/mii-dgsin/dgsin-2122-08#readme",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mongodb": "^4.4.0",
+    "request": "^2.88.2"
+  }
+}

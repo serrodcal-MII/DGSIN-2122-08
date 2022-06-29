@@ -1,0 +1,8 @@
+<div class="container">
+    <h3>Viajeros por paises frente a ingresos de los países de procedencia</h3>
+    <label for="yearInput">Selecciona un año</label>
+    <select class="form-select" id="yearInput" [(ngModel)]="selectedYear" (change)="onChange(selectedYear);" >
+        <option *ngFor="let year of years" [value]="year" #newYear>{{year}}</option>
+      </select>
+    <div id="stays_vs_budget_by_country" style="width: 800px; height: 500px;"></div>
+</div>

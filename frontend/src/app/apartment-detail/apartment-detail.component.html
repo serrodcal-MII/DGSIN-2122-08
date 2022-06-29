@@ -1,0 +1,38 @@
+<div class="container">
+    <h1>Update apartments</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Country</td>
+                <td>Year</td>
+                <td>Travellers</td>
+                <td>Stays</td>
+                <td>Avg</td>
+                <td>Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{apartment.country}}</td>
+                <td>{{apartment.year}}</td>
+                <td><input class="form-control" type="number" [(ngModel)]="apartment.travellers" /></td>
+                <td><input class="form-control" type="number" [(ngModel)]="apartment.stays" /></td>
+                <td><input class="form-control" type="number" [(ngModel)]="apartment.avg" /></td>
+                <td>
+                    <button 
+                        class="btn btn-primary"
+                        (click)="saveApartment()">
+                        Update
+                    </button>
+                    &nbsp;&nbsp;
+                    <button 
+                        class="btn btn-secondary"
+                        (click)="goBack()">
+                        Cancel
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

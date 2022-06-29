@@ -1,0 +1,138 @@
+<div class="container">
+    <div class="row">
+    <h2>Lista de Ingresos tributarios como porcentaje del PIB</h2>
+</div>
+    <div class="row">
+        <div class="col-4">
+            <div *ngIf="showError" class="alert alert-danger" role="alert">
+                {{errorMessage}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive">
+            <form #formTax="ngForm" (ngSubmit)="addTax(formTax)">
+                <table class="table table-striped text-center">
+                    <caption>Nº de Ingresos tributarios: {{ taxes?.length || 0}}</caption>
+                    <thead class="table-secondary">
+                        <tr>
+                            <td>País</td>
+                            <td>Año</td>
+                            <td>PIB per cápita ($)</td>
+                            <td>Ingresos fiscales totales como porcentaje del PIB (%)</td>
+                            <td>Población</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input class="form-control" minlength="3" #newTaxCountry="ngModel" name="newTaxCountry"
+                                    [(ngModel)]="tax.country" type="text"
+                                    [ngClass]="'form-control' + (newTaxCountry.invalid && newTaxCountry.touched ? ' is-invalid' : '')"
+                                    required />
+                                <div *ngIf="newTaxCountry.invalid && newTaxCountry.touched" class="invalid-feedback">
+                                    <div *ngIf="newTaxCountry.errors?.['required']">
+                                        El país es obligatorio
+                                    </div>
+                                    <div *ngIf="newTaxCountry.errors?.['minlength']">
+                                        El país debe tener al menos 3 letras
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input class="form-control" #newTaxYear="ngModel" name="newTaxYear"
+                                    [(ngModel)]="tax.year" type="number" min="1700"
+                                    [ngClass]="'form-control' + (newTaxYear.invalid && newTaxYear.touched ? ' is-invalid' : '')"
+                                    required />
+                                <div *ngIf="newTaxYear.invalid && newTaxYear.touched" class="invalid-feedback">
+                                    <div *ngIf="newTaxYear.errors?.['required']">
+                                        El año es obligatorio
+                                    </div>
+                                    <div *ngIf="newTaxYear.errors?.['min']">
+                                        El año debe ser mayor de 1700
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input class="form-control" #newTaxGDP="ngModel" name="newTaxGDP"
+                                    [(ngModel)]="tax.gdp_per_capita" type="number"
+                                    [ngClass]="'form-control' + (newTaxGDP.invalid && newTaxGDP.touched ? ' is-invalid' : '')"
+                                    required />
+                                <div *ngIf="newTaxGDP.invalid && newTaxGDP.touched" class="invalid-feedback">
+                                    <div *ngIf="newTaxGDP.errors?.['required']">
+                                        El PIB per cápita es obligatorio
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input class="form-control" #newTaxTotal="ngModel" name="newTaxTotal"
+                                    [(ngModel)]="tax.total_tax_revenues" type="number"
+                                    [ngClass]="'form-control' + (newTaxTotal.invalid && newTaxTotal.touched ? ' is-invalid' : '')"
+                                    required />
+                                <div *ngIf="newTaxTotal.invalid && newTaxTotal.touched" class="invalid-feedback">
+                                    <div *ngIf="newTaxTotal.errors?.['required']">
+                                        El Ingreso fiscal total es obligatorio
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input class="form-control" min="1" #newTaxPopulation="ngModel" name="newTaxPopulation"
+                                    [(ngModel)]="tax.population" type="number" pattern="^\d+$"
+                                    [ngClass]="'form-control' + (newTaxPopulation.invalid && newTaxPopulation.touched ? ' is-invalid' : '')"
+                                    required />
+                                <div *ngIf="newTaxPopulation.invalid && newTaxPopulation.touched"
+                                    class="invalid-feedback">
+                                    <div *ngIf="newTaxPopulation.errors?.['required']">
+                                        La población es obligatoria
+                                    </div>
+                                    <div *ngIf="newTaxPopulation.errors?.['min']">
+                                        La población debe ser mayor que 0
+                                    </div>
+                                    <div *ngIf="newTaxPopulation.errors?.['pattern']">
+                                        La población no puede tener decimales
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="submit" value="Guardar" class="btn btn-outline-primary"
+                                    [disabled]="!formTax.form.valid" />
+                            </td>
+                        </tr>
+                        <tr *ngFor="let tax of taxes">
+                            <td>{{tax.country}}</td>
+                            <td>{{tax.year}}</td>
+                            <td>{{tax.gdp_per_capita | currency}}</td>
+                            <td>{{tax.total_tax_revenues | number: '2.0-2'}}%</td>
+                            <td>{{tax.population }}</td>
+                            <td>
+                                <div class="container">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6">
+                                            <a class="btn btn-outline-warning"
+                                                [routerLink]="['/taxes', tax.country, tax.year]"><i
+                                                    class="bi bi-pencil"></i></a>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-danger"
+                                                (click)="deleteTax(tax.country, tax.year)"><i
+                                                    class="bi bi-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="taxes?.length > 0" class="row">
+        <div class="col">
+            <button class="btn btn-outline-danger" (click)="deleteAllTaxes()">
+                <i class="bi bi-trash me-1"></i>Eliminar todo
+            </button>
+        </div>
+    </div>
+</div>

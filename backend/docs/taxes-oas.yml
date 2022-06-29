@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: DGSIN-2122-08-taxesAPI
+  version: 1.0.0
+  contact:
+    name: Guiomar Fernández de Bobadilla Brioso
+    email: guiferbri@alum.us.es
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+servers:
+  - url: https://dgsin-2122-08.herokuapp.com
+paths:
+  /api/v1/tax-gdp-ratios/loadInitialData:
+    get:
+      summary: Load Initial Data
+      description: Cargar 15 datos iniciales de distintos paise y años. Si hay datos en la
+        base de datos devuelve 200, si no, los crea y devuelve 201.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/tax'
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/tax'
+  /api/v1/tax-gdp-ratios/:
+    post:
+      summary: POST Tax
+      description: Crear un nuevo registro (Ingreso tributario como porcentaje del PIB) en el conjunto de datos.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tax'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '409':
+          description: Conflict
+          content:
+            application/json: {}
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    get:
+      summary: GET Taxes
+      description: Obtener todos los registros del conjunto de datos
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/tax'
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    delete:
+      summary: DELETE Taxes
+      description: Eliminar todos los registros del conjunto de datos
+      responses:
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+  /api/v1/tax-gdp-ratios/{country}/{year}:
+    get:
+      summary: GET Tax
+      parameters:
+        - name: country
+          in: path
+          description: Nombre del país
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          description: Año del ingreso tributario
+          required: true
+          schema:
+            type: integer
+      description: Obtener un recurso específico
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tax'
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    put:
+      summary: PUT Tax
+      parameters:
+        - name: country
+          in: path
+          description: Nombre del país
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          description: Año del ingreso tributario
+          required: true
+          schema:
+            type: integer
+      description: Actualizar un Ingreso tributario como porcentaje del PIB.
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tax'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+    delete:
+      summary: DELETE Tax
+      parameters:
+        - name: country
+          in: path
+          description: Nombre del país
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          description: Año del ingreso tributario
+          required: true
+          schema:
+            type: integer
+      description: Eliminar un Ingreso tributario como porcentaje del PIB
+      responses:
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+        '400':
+          description: Bad request
+          content:
+            application/json: {}
+        '404':
+          description: Not found
+          content:
+            application/json: {}
+        '500':
+          description: Internal error
+          content:
+            application/json: {}
+components:
+  schemas:
+    tax:
+      description: Ingreso tributario como porcentaje del PIB
+      type: object
+      properties:
+        country:
+          type: string
+          minLength: 1
+        year:
+          type: integer
+        gdp_per_capita:
+          type: number
+        total_tax_revenues:
+          type: number
+        population:
+          type: integer
+      required:
+        - country
+        - year
+        - gdp_per_capita
+        - total_tax_revenues
+        - population

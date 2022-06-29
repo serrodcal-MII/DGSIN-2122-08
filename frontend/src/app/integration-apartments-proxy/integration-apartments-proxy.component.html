@@ -1,0 +1,8 @@
+<div class="container">
+    <h3>Media de viajeros por paises frente a PIB per cápita de los países de procedencia</h3>
+    <label for="yearInput">Selecciona un año</label>
+    <select class="form-select" id="yearInput" [(ngModel)]="selectedYear" (change)="onChange(selectedYear);" >
+        <option *ngFor="let year of years" [value]="year" #newYear>{{year}}</option>
+      </select>
+    <div id="avg_stays_vs_gdp_by_country" style="width: 900px; height: 500px;"></div>
+</div>
